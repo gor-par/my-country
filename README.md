@@ -3,3 +3,4 @@ A simple app that uses Async JS and public APIs to find your country and informa
 
 ## !!!! STYLE
 ## !!!! IMPLEMENT "VPN"
+## !!!! ADD ERROR HANDLING
