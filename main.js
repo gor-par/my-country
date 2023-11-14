@@ -11,7 +11,7 @@ function initializeUI() {
 function run() {
   getCoordinates()
     .then((coords) => getCountryNameByCoords(...coords))
-    .then((country) => getCountryDataByName(country))
+    .then((country) => getCountryData("name", country))
     .then((data) => renderCountry(data));
 }
 
@@ -32,14 +32,8 @@ function getCountryNameByCoords(latitude, longitude) {
     .then((data) => data.results[0].country);
 }
 
-function getCountryDataByName(name) {
-  return fetch(`https://restcountries.com/v3.1/name/${name}`)
-    .then((response) => response.json())
-    .then((data) => data[0]);
-}
-
-function getCountryDataByCode(code) {
-  return fetch(`https://restcountries.com/v3.1/alpha/${code}`)
+function getCountryData(endpoint, query) {
+  return fetch(`https://restcountries.com/v3.1/${endpoint}/${query}`)
     .then((response) => response.json())
     .then((data) => data[0]);
 }
@@ -78,13 +72,12 @@ async function renderCountry(country) {
     </p>
     <img class="flag" src="${flagSVG}" alt="" />
   `;
-  console.log(country);
 }
 
 function parseNeighbors(codes) {
   let promises = [];
   for (const code of codes) {
-    promises.push(getCountryDataByCode(code));
+    promises.push(getCountryData("alpha", code));
   }
   return Promise.all(promises).then((arr) =>
     arr.map((country) => country.name.common)
